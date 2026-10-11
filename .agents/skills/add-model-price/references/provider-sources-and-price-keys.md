@@ -364,11 +364,11 @@ file and `openAIModels`in July 27 2026 audit. Official sources:`https://develope
   moved to "Legacy models (still available)"). API ID / alias / Bedrock ID /
   Google Cloud ID / Microsoft Foundry ID / Claude Platform on AWS ID are all
   the dateless `claude-sonnet-5-5` / `anthropic.claude-sonnet-5-5` pattern.
-  Pricing is numerically identical to `claude-sonnet-5`: $2/MTok input,
-  $10/MTok output, 5m cache write $2.50/MTok, 1h cache write $4/MTok, cache
-  read $0.20/MTok (standard 0.1x multiplier — the pricing page's cache-hits
-  footnote only lists Fable 5.1/Mythos 5.1 at 0.025x and Opus 5.5 at 0.05x as
-  non-standard, so Sonnet 5.5 is not an exception). On the flat 1M-context
+  Pricing is numerically identical to `claude-sonnet-5` for input, output, and
+  cache writes: $2/MTok input, $10/MTok output, 5m cache write $2.50/MTok, 1h
+  cache write $4/MTok. **Cache read is $0.10/MTok (0.05x base input), not the
+  standard 0.1x rate** — see the October 11 2026 correction entry above; this
+  paragraph originally stated $0.20/MTok, which was wrong. On the flat 1M-context
   list (1M context window, 128K max output, no Large Context tier) since it is
   a Claude 4.6-or-later-generation model. **No Fast mode**: the Fast mode
   pricing table lists only Claude Opus 5.5, Claude Opus 5, and Claude Opus
@@ -870,6 +870,22 @@ file and `openAIModels`in July 27 2026 audit. Official sources:`https://develope
   unescaped `.` follows this file's existing convention for other dotted
   version numbers such as `gpt-5.6-sol` and `gemini-3.7-flash`, which likewise
   do not escape the literal dot).
+- **Claude Sonnet 5.5 cache-read price corrected (found October 11 2026)** —
+  The September 29 2026 entry below incorrectly concluded Claude Sonnet 5.5
+  uses the standard 0.1x cache-read multiplier ($0.20/MTok). Two independent
+  fetches this run — the main pricing page's model table (cache-hits footnote
+  2: "Cache hits and refreshes on Claude Opus 5.5 **and Claude Sonnet 5.5**
+  are priced at 0.05x the base input price") and Sonnet 5.5's own dedicated
+  model page (`https://platform.claude.com/docs/en/models/sonnet-5-5/overview`,
+  Pricing table: "Cache read | $0.10 / MTok") — agree Sonnet 5.5 shares Opus
+  5.5's non-standard 0.05x multiplier, not the standard 0.1x rate. Corrected
+  `cache_read_input_tokens` / `input_cached_tokens` / `input_cache_read` from
+  `2e-7` to `0.1e-6` in the pricing file; every other Sonnet 5.5 price (input,
+  output, 5m/1h cache write) is unchanged. Lesson: when a footnote lists
+  multiple models sharing one non-standard multiplier, re-read it for every
+  named model individually — the September 29 audit evidently read the
+  footnote as Opus-5.5-only and didn't cross-check the dedicated model page's
+  own pricing table, which would have caught this immediately.
 - **September 29 2026 audit: Claude Sonnet 5.5 added, released the day before
   this run; everything else confirmed unchanged** — Re-fetched the full
   Anthropic pricing page (model table, cache-hits footnote, Fast mode and
